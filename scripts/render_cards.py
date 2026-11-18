@@ -207,7 +207,7 @@ def activity(data: dict | None) -> None:
     best = max(counts, default=0)
     total = data.get("totalContributions", 0) if data else 0
     active = sum(day["contributionCount"] > 0 for day in days)
-    summary = f"{total} CONTRIBUTIONS   /   {active} ACTIVE DAYS" if data else "PUBLIC ACTIVITY  /  SYNCING FROM GITHUB"
+    summary = f"{total} PUBLIC CONTRIBUTIONS   /   {active} ACTIVE DAYS" if data else "PUBLIC ACTIVITY  /  SYNCING FROM GITHUB"
     body = header("GITHUB ACTIVITY  /  MONTH BY MONTH", 1200)
     body += f'<text x="30" y="125" font-size="18" class="muted">{xml(summary)}</text>'
     bars = []
