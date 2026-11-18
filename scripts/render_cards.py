@@ -117,7 +117,7 @@ def hero() -> None:
 TILES = [
     ("vision", "01", "COMPUTER", "VISION", "Camera-based prototypes", TEAL, "eye"),
     ("learning", "02", "LEARNING", "TOOLS", "Practice that feels interactive", BLUE, "book"),
-    ("web", "03", "INTERACTIVE", "WEB", "3D and responsive experiences", AMBER, "cube"),
+    ("web", "03", "CAMPUS", "SERVICES", "Digital university services", AMBER, "cube"),
 ]
 
 
@@ -147,7 +147,7 @@ def tiles() -> None:
 
 PROJECTS = [
     ("codequest", "CODEQUEST AI", "Learning platform", "Teachers, parents, classes and interactive quizzes", "React  /  Python  /  Firebase", TEAL, "01"),
-    ("drone", "IDSAI DRONE CENTER", "Interactive 3D lessons", "Drone course with lectures and a 3D lab", "React  /  TypeScript  /  Three.js", BLUE, "02"),
+    ("idsai", "IDSAI STUDENT SERVICES", "Campus services platform", "Forms, schedules and room bookings", "Web  /  Firebase  /  Vercel", BLUE, "02"),
     ("vision", "CLASS SLEEP MONITOR", "Computer vision prototype", "Eye tracking and closed-eye detection in class", "Python  /  OpenCV  /  MediaPipe", AMBER, "03"),
     ("algorithms", "ALGORITHM QUIZ LAB", "Practice and exam prep", "300 questions across algorithms and data structures", "Web  /  PWA  /  GitHub Pages", "#C49CFF", "04"),
 ]

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="390" height="240" viewBox="0 0 390 240" role="img" aria-label="INTERACTIVE WEB: 3D and responsive experiences">
-<title>INTERACTIVE WEB: 3D and responsive experiences</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="240" viewBox="0 0 390 240" role="img" aria-label="CAMPUS SERVICES: Digital university services">
+<title>CAMPUS SERVICES: Digital university services</title>
 <defs>
   <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101B30"/><stop offset="1" stop-color="#0B1220"/></linearGradient>
   <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#5CE5C4"/><stop offset=".55" stop-color="#80AFFF"/><stop offset="1" stop-color="#C49CFF"/></linearGradient>
@@ -30,8 +30,8 @@ text{font-family:ProfileSans,DejaVu Sans,Arial,sans-serif;fill:#EAF4FF}
 <text x="30" y="86" class="label" fill="#FFC184">FIELD / 03</text>
 <g transform="translate(315 65)" fill="none" stroke="#FFC184" stroke-width="3" stroke-linejoin="round" class="pulse"><path d="M0-27 25-14 25 14 0 27-25 14-25-14Z"/><path d="M-25-14 0 0 25-14M0 0V27"/></g>
 <g class="rise" style="animation-delay:1.12s">
-<text x="28" y="139" font-size="34" class="bold">INTERACTIVE</text>
-<text x="28" y="178" font-size="34" class="bold" fill="#FFC184">WEB</text>
-<text x="29" y="210" font-size="15" class="muted">3D and responsive experiences</text></g>
+<text x="28" y="139" font-size="34" class="bold">CAMPUS</text>
+<text x="28" y="178" font-size="34" class="bold" fill="#FFC184">SERVICES</text>
+<text x="29" y="210" font-size="15" class="muted">Digital university services</text></g>
 <path d="M345 193l12 0m-6-6 6 6-6 6" stroke="#FFC184" fill="none" stroke-width="2"/>
 </svg>
