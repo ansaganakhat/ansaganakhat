@@ -225,12 +225,51 @@ def activity(data: dict | None) -> None:
 
 def graph(data: dict | None) -> None:
     days = data.get("days", []) if data else []
+    total = data.get("totalContributions", 0) if data else 0
+    active = sum(day["contributionCount"] > 0 for day in days)
+    best_day = max(days, key=lambda day: day["contributionCount"], default=None)
+    longest = current = 0
+    for day in days:
+        current = current + 1 if day["contributionCount"] else 0
+        longest = max(longest, current)
+
     body = header("CONTRIBUTION CALENDAR  /  LAST 12 MONTHS", 1200)
-    body += '<text x="31" y="140" font-size="16" class="muted">MON</text><text x="31" y="200" font-size="16" class="muted">THU</text><text x="31" y="260" font-size="16" class="muted">SUN</text>'
-    body += '<text x="30" y="326" font-size="15" class="muted">Less</text>'
-    for i, color in enumerate(("#1C2D3F", "#245B61", "#348E83", "#42BDA5", TEAL)):
-        body += f'<rect x="80" y="310" width="20" height="20" rx="4" fill="{color}" transform="translate({i*27} 0)"/>'
-    body += '<text x="230" y="326" font-size="15" class="muted">More</text>'
+    body += '''<g class="rise" style="animation-delay:1.95s">
+<text x="30" y="142" font-size="35" class="bold">A YEAR IN <tspan fill="url(#shine)">PIXELS</tspan></text>
+<text x="32" y="174" font-size="16" class="muted">Every square is a real day of building on GitHub.</text></g>
+<circle cx="1000" cy="159" r="99" fill="url(#eye-glow)"/>
+<path d="M855 161 Q1000 50 1145 161 Q1000 272 855 161Z" fill="none" stroke="url(#shine)" stroke-width="2.5" opacity=".8"/>
+<path d="M883 161 Q1000 79 1117 161 Q1000 243 883 161Z" fill="none" stroke="#80AFFF" opacity=".38"/>
+<circle cx="1000" cy="161" r="52" fill="#10293A" stroke="#5CE5C4" stroke-width="2"/>
+<circle cx="1000" cy="161" r="27" fill="#183F4C" stroke="#80AFFF" stroke-width="2"/>
+<circle cx="1000" cy="161" r="12" fill="#5CE5C4" class="pulse"/>
+<path d="M855 161H827L809 143H792M1145 161h27M1000 109V87l18-18h38M1000 213v21l-15 14h-49" fill="none" stroke="#5CE5C4" stroke-width="1.5" opacity=".5"/>
+<circle cx="792" cy="143" r="3" fill="#5CE5C4"/><circle cx="1056" cy="69" r="3" fill="#80AFFF"/>
+<circle cx="936" cy="248" r="3" fill="#5CE5C4"/><circle cx="1172" cy="161" r="3" fill="#80AFFF"/>'''
+
+    busiest = (
+        f'{best_day["contributionCount"]} / {datetime.strptime(best_day["date"], "%Y-%m-%d").strftime("%d %b").upper()}'
+        if best_day and best_day["contributionCount"] else "0 / —"
+    )
+    stats = [
+        (str(total), "CONTRIBUTIONS"),
+        (str(active), "ACTIVE DAYS"),
+        (str(longest), "BEST STREAK / DAYS"),
+        (busiest, "BUSIEST DAY"),
+    ]
+    for i, (value, label) in enumerate(stats):
+        x = 30 + i * 191
+        body += f'''<g class="rise" style="animation-delay:{2.05+i*.09:.2f}s">
+<rect x="{x}" y="189" width="180" height="57" rx="12" fill="#142438" stroke="#34536A"/>
+<path d="M{x+1} 202V226" stroke="{TEAL if i < 2 else BLUE}" stroke-width="3"/>
+<text x="{x+13}" y="215" font-size="17" class="bold">{xml(value)}</text>
+<text x="{x+13}" y="235" font-size="10" class="muted" letter-spacing="1.3">{label}</text></g>'''
+
+    body += '''<rect x="28" y="276" width="1144" height="166" rx="17" fill="#0B1726" stroke="#2A4158"/>
+<path d="M88 284V433" stroke="#2A4158"/>
+<text x="40" y="307" font-size="12" class="muted">SUN</text>
+<text x="40" y="364" font-size="12" class="muted">WED</text>
+<text x="40" y="421" font-size="12" class="muted">SAT</text>'''
     if days:
         first = date.fromisoformat(days[0]["date"])
         first_sunday = first - timedelta(days=(first.weekday() + 1) % 7)
@@ -238,19 +277,32 @@ def graph(data: dict | None) -> None:
         last = date.fromisoformat(days[-1]["date"])
         d = first_sunday
         cells = []
+        last_month = None
         while d <= last:
             col = (d - first_sunday).days // 7
             row = (d.weekday() + 1) % 7
+            if d == first_sunday or d.day == 1:
+                label_date = first if d == first_sunday else d
+                label_month = (label_date.year, label_date.month)
+                if label_month != last_month and col < 54:
+                    cells.append(f'<text x="{102+col*19}" y="268" font-size="12" class="muted">{label_date.strftime("%b").upper()}</text>')
+                    last_month = label_month
             count = day_map.get(d.isoformat())
             if count is not None:
                 level = 0 if count == 0 else 1 if count == 1 else 2 if count <= 3 else 3 if count <= 7 else 4
                 color = ("#1C2D3F", "#245B61", "#348E83", "#42BDA5", TEAL)[level]
-                cells.append(f'<rect x="{101+col*19}" y="{98+row*29}" width="15" height="15" rx="3" fill="{color}" class="pop" style="animation-delay:{2.2+col*.018:.2f}s"><title>{d.isoformat()}: {count} contributions</title></rect>')
+                cells.append(f'<rect x="{102+col*19}" y="{292+row*19}" width="14" height="14" rx="3" fill="{color}" class="pop" style="animation-delay:{2.35+col*.017:.2f}s"><title>{d.isoformat()}: {count} contributions</title></rect>')
             d += timedelta(days=1)
         body += "".join(cells)
     else:
-        body += '<text x="360" y="205" font-size="22" class="muted">Activity graph updates automatically every day</text>'
-    save("graph.svg", svg(1200, 355, "GitHub contribution calendar", body))
+        body += '<text x="350" y="370" font-size="20" class="muted">Activity graph updates automatically every day</text>'
+    body += '<text x="30" y="472" font-size="13" class="muted">LIVE CONTRIBUTION DATA  /  REFRESHED DAILY</text>'
+    body += '<text x="931" y="472" font-size="13" class="muted">LESS</text>'
+    for i, color in enumerate(("#1C2D3F", "#245B61", "#348E83", "#42BDA5", TEAL)):
+        body += f'<rect x="{970+i*21}" y="459" width="13" height="13" rx="3" fill="{color}"/>'
+    body += '<text x="1085" y="472" font-size="13" class="muted">MORE</text>'
+    extra = '<radialGradient id="eye-glow"><stop stop-color="#5CE5C4" stop-opacity=".23"/><stop offset="1" stop-color="#5CE5C4" stop-opacity="0"/></radialGradient>'
+    save("graph.svg", svg(1200, 490, "A year in pixels — real GitHub contribution calendar", body, extra))
 
 
 def main() -> None:
