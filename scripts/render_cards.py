@@ -20,6 +20,7 @@ from xml.sax.saxutils import escape
 ROOT = Path(__file__).resolve().parents[1]
 CARDS = ROOT / "cards"
 DATA = ROOT / "data" / "contributions.json"
+CAR_PHOTO = ROOT / "assets" / "audi-night.jpg"
 USER = "ansaganakhat"
 STATIC = os.getenv("STATIC") == "1"
 INK = "#EAF4FF"
@@ -236,16 +237,15 @@ def graph(data: dict | None) -> None:
     body = header("CONTRIBUTION CALENDAR  /  LAST 12 MONTHS", 1200)
     body += '''<g class="rise" style="animation-delay:1.95s">
 <text x="30" y="142" font-size="35" class="bold">A YEAR IN <tspan fill="url(#shine)">PIXELS</tspan></text>
-<text x="32" y="174" font-size="16" class="muted">Every square is a real day of building on GitHub.</text></g>
-<circle cx="1000" cy="159" r="99" fill="url(#eye-glow)"/>
-<path d="M855 161 Q1000 50 1145 161 Q1000 272 855 161Z" fill="none" stroke="url(#shine)" stroke-width="2.5" opacity=".8"/>
-<path d="M883 161 Q1000 79 1117 161 Q1000 243 883 161Z" fill="none" stroke="#80AFFF" opacity=".38"/>
-<circle cx="1000" cy="161" r="52" fill="#10293A" stroke="#5CE5C4" stroke-width="2"/>
-<circle cx="1000" cy="161" r="27" fill="#183F4C" stroke="#80AFFF" stroke-width="2"/>
-<circle cx="1000" cy="161" r="12" fill="#5CE5C4" class="pulse"/>
-<path d="M855 161H827L809 143H792M1145 161h27M1000 109V87l18-18h38M1000 213v21l-15 14h-49" fill="none" stroke="#5CE5C4" stroke-width="1.5" opacity=".5"/>
-<circle cx="792" cy="143" r="3" fill="#5CE5C4"/><circle cx="1056" cy="69" r="3" fill="#80AFFF"/>
-<circle cx="936" cy="248" r="3" fill="#5CE5C4"/><circle cx="1172" cy="161" r="3" fill="#80AFFF"/>'''
+<text x="32" y="174" font-size="16" class="muted">Every square is a real day of building on GitHub.</text></g>'''
+
+    # Embed the photograph so GitHub's README img tag needs no external image URL.
+    photo = base64.b64encode(CAR_PHOTO.read_bytes()).decode("ascii")
+    body += f'''<g clip-path="url(#car-clip)">
+<image x="808" y="92" width="364" height="157" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,{photo}"/>
+<rect x="808" y="92" width="364" height="157" fill="url(#car-fade)"/></g>
+<rect x="808" y="92" width="364" height="157" rx="16" fill="none" stroke="#5CE5C4" stroke-opacity=".45"/>
+<path d="M824 101h33M1149 240h-33" stroke="#5CE5C4" stroke-width="2" opacity=".8"/>'''
 
     busiest = (
         f'{best_day["contributionCount"]} / {datetime.strptime(best_day["date"], "%Y-%m-%d").strftime("%d %b").upper()}'
@@ -301,8 +301,9 @@ def graph(data: dict | None) -> None:
     for i, color in enumerate(("#1C2D3F", "#245B61", "#348E83", "#42BDA5", TEAL)):
         body += f'<rect x="{970+i*21}" y="459" width="13" height="13" rx="3" fill="{color}"/>'
     body += '<text x="1085" y="472" font-size="13" class="muted">MORE</text>'
-    extra = '<radialGradient id="eye-glow"><stop stop-color="#5CE5C4" stop-opacity=".23"/><stop offset="1" stop-color="#5CE5C4" stop-opacity="0"/></radialGradient>'
-    save("graph.svg", svg(1200, 490, "A year in pixels — real GitHub contribution calendar", body, extra))
+    extra = '''<clipPath id="car-clip"><rect x="808" y="92" width="364" height="157" rx="16"/></clipPath>
+<linearGradient id="car-fade" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#0B1220" stop-opacity=".15"/><stop offset="1" stop-color="#0B1220" stop-opacity="0"/></linearGradient>'''
+    save("graph.svg", svg(1200, 490, "Audi-inspired photograph and real GitHub contribution calendar", body, extra))
 
 
 def main() -> None:
