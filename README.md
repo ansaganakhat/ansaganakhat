@@ -22,7 +22,7 @@
 
 <div align="center">
   <p>Python · OpenCV · MediaPipe · React · TypeScript · FastAPI · Firebase</p>
-  <p>Мен технологияны білім мен күнделікті өмірге пайдалы ету үшін жобалар жасаймын.</p>
+  <p>Күніне 1% жақсару – жеңіс!</p>
   <a href="https://ansaganakhat.github.io/profile/">Portfolio</a> ·
   <a href="https://github.com/ansaganakhat?tab=repositories">All repositories</a>
 </div>
